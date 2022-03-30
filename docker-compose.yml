@@ -1,0 +1,47 @@
+---
+version: "3.1"
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=hike
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./sql/init-table.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./sql/fill-table.sql:/docker-entrypoint-initdb.d/fill_tables.sql
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=khaifahmi99@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=postgres
+    volumes:
+      - pgadmin-data:/var/lib/postgresql
+
+  metabase:
+    image: metabase/metabase
+    restart: always
+    ports:
+      - "5151:3000"
+    environment:
+      - MB_DB_TYPE=postgres
+      - MB_DB_DBNAME=hike
+      - MB_DB_PORT=5432
+      - MB_DB_USER=postgres
+      - MB_DB_PASS=postgres
+      - MB_DB_HOST=db
+    volumes:
+      - metabase-data:/metabase-data
+
+volumes:
+  postgres-data:
+  pgadmin-data:
+  metabase-data:
