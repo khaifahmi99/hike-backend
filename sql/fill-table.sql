@@ -10,8 +10,8 @@ INSERT INTO records (
   'example description 1',
   'example location 1',
   'VIC',
-  '90',
-  '132'
+  90,
+  132
 );
 
 INSERT INTO records (
